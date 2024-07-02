@@ -13,29 +13,62 @@ namespace EmployeeApp.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task<bool> CreateAsync(Employee employee)
+        public async Task<bool> CreateAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            var res = await dbContext.AddAsync(employee);
+            await dbContext.SaveChangesAsync();
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteyIdAsync(Guid id)
+        public async Task<bool> DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (user is not null)
+            {
+                var value = dbContext.Employees.Remove(user);
+                await dbContext.SaveChangesAsync();
+                return await Task.FromResult(true);
+            }
+            return await Task.FromResult(false);
         }
 
         public async Task<IEnumerable<Employee>> GetAllAsync()
         {
-            return await dbContext.Employees.ToListAsync();
+            return await dbContext.Employees.ToArrayAsync();
         }
 
-        public Task<Employee?> GetByIdAsync(Guid id)
+        public async Task<Employee?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            return user;
         }
 
-        public Task<bool> UpdateAsync(Employee employee)
+        public async Task<bool> UpdateAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            var result = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+
+            if (result is not null)
+            {
+                result.FirstName = employee.FirstName;
+                result.LastName = employee.LastName;
+                result.Phone = employee.Phone;
+                result.Salary = employee.Salary;
+                result.Address = employee.Address;
+                result.Email = employee.Email;
+                result.IsDeleted = employee.IsDeleted;
+                result.UpdatedById = new Guid();// should be changed
+                result.UpdatedDate = DateTime.Now;
+
+                if (result.Id != new Guid())
+                {
+                    result.Id = employee.Id;
+                }
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+
         }
     }
 }

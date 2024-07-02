@@ -8,6 +8,6 @@ namespace EmployeeApp.Repositories
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<bool> CreateAsync(Employee employee);
         Task<bool> UpdateAsync(Employee employee);
-        Task<bool> DeleteyIdAsync(Guid id);
+        Task<bool> DeleteByIdAsync(Guid id);
     }
 }
