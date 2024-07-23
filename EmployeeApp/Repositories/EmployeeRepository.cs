@@ -44,9 +44,9 @@ namespace EmployeeApp.Repositories
             return user;
         }
 
-        public async Task<bool> UpdateAsync(Employee employee)
+        public async Task<bool> UpdateAsync(Guid Id, Employee employee)
         {
-            var result = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+            var result = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == Id);
 
             if (result is not null)
             {
@@ -62,13 +62,12 @@ namespace EmployeeApp.Repositories
 
                 if (result.Id != new Guid())
                 {
-                    result.Id = employee.Id;
+                    result.Id = Id;
                 }
-                await dbContext.SaveChangesAsync();
+                int affected = await dbContext.SaveChangesAsync();
                 return true;
             }
             return false;
-
-        }
+        }// TODO complete the return data like in the book
     }
 }
