@@ -16,26 +16,40 @@ namespace EmployeeApp.Controllers
             _employeeRepository = employeeRepository;
         }
 
+
         [HttpGet(ApiEndpoints.Employees.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _employeeRepository.GetAllAsync();
-            return Ok(result);
+            var employees = await _employeeRepository.GetAllAsync();
+            if (employees is null)
+            {
+                return NotFound();
+            }
+            var emoloyeesResponse = employees.MapToResponse();
+            return Ok(emoloyeesResponse);
         }
 
+
         [HttpGet(ApiEndpoints.Employees.Get)]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            var result = await _employeeRepository.GetByIdAsync(id);
-            return Ok(result);
+            var employee = await _employeeRepository.GetByIdAsync(id);
+            if (employee is null)
+            {
+                return NotFound();
+            }
+            var employeeResponse = employee.MapToResponse();
+            return Ok(employeeResponse);
         }
+
 
         [HttpPost(ApiEndpoints.Employees.Create)]
         public async Task<IActionResult> Create(CreateEmployeeRequest request)
         {
             var employee = request.MapToEmployee();
             await _employeeRepository.CreateAsync(employee);
-            return Created($"/{ApiEndpoints.Employees.Create}/{employee.Id}", employee);
+            var employeeResponse = employee.MapToResponse();
+            return CreatedAtAction(nameof(Get), new { id = employee.Id }, employeeResponse);
         }
 
 
@@ -43,9 +57,11 @@ namespace EmployeeApp.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateEmployeeRequest request)
         {
             var employee = request.MaptoEmployee(id);
-            var result = await _employeeRepository.UpdateAsync(id, employee);
-            return Ok(result);
+            var updateEmployee = await _employeeRepository.UpdateAsync(employee);
+            //var response  = updateEmployee.MapToResponse();
+            return Ok(updateEmployee);// and here add response
         }
+
 
         [HttpDelete(ApiEndpoints.Employees.Delete)]
         public async Task<IActionResult> DeleteById(Guid id)
@@ -53,5 +69,5 @@ namespace EmployeeApp.Controllers
             var result = await _employeeRepository.DeleteByIdAsync(id);
             return Ok(result);
         }
-    }// TODO complete the mapping for the response
+    }// TODO complete the mapping for the responses and test it 
 }

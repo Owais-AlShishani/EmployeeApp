@@ -1,6 +1,6 @@
 ﻿namespace EmployeeApp.Models.Responses
 {
-    public class EmpolyeeResponse
+    public class EmployeeResponse
     {
         public Guid Id { get; set; }
         public required string FirstName { get; set; }

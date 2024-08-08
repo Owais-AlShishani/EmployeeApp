@@ -2,6 +2,6 @@
 {
     public class EmployeesResponse
     {
-        public IEnumerable<EmployeesResponse> Items { get; init; } = [];
+        public IEnumerable<EmployeeResponse> Items { get; init; } = [];
     }
 }

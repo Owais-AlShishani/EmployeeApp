@@ -1,5 +1,6 @@
 ﻿using EmployeeApp.Models.Entities;
 using EmployeeApp.Models.Requests;
+using EmployeeApp.Models.Responses;
 
 namespace EmployeeApp.Mapping
 {
@@ -34,6 +35,32 @@ namespace EmployeeApp.Mapping
                 UpdatedDate = DateTime.Now,
                 Salary = request.Salary,
                 IsDeleted = request.IsDeleted
+            };
+        }
+        public static EmployeeResponse MapToResponse(this Employee employee)
+        {
+            return new EmployeeResponse()
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.LastName,
+                Phone = employee.Phone,
+                Address = employee.Address,
+                CreatedById = employee.CreatedById,
+                CreatedDate = employee.CreatedDate,
+                UpdatedById = employee.UpdatedById,
+                UpdatedDate = employee.UpdatedDate,
+                Salary = employee.Salary,
+                IsDeleted = employee.IsDeleted
+            };
+        }
+
+        public static EmployeesResponse MapToResponse(this IEnumerable<Employee> employees)
+        {
+            return new EmployeesResponse()
+            {
+                Items = employees.Select(MapToResponse)
             };
         }
     }
