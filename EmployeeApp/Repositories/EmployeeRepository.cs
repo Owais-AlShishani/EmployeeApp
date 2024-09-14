@@ -15,22 +15,28 @@ namespace EmployeeApp.Repositories
 
         public async Task<bool> CreateAsync(Employee employee)
         {
-            var res = await dbContext.AddAsync(employee);
-            await dbContext.SaveChangesAsync();
-            return await Task.FromResult(true);
+            //int result = await dbContext.AddAsync(employee);
+            await dbContext.AddAsync(employee);
+            int affected = await dbContext.SaveChangesAsync();
+            return affected > 0;
         }
 
-        public async Task<bool> DeleteByIdAsync(Guid id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
-            var user = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
-
+            var user = await dbContext.Employees.FindAsync(id);
             if (user is not null)
             {
-                var value = dbContext.Employees.Remove(user);
-                await dbContext.SaveChangesAsync();
-                return await Task.FromResult(true);
+                //var value = dbContext.Employees.Remove(user);
+                dbContext.Employees.Remove(user);
+                int affected = await dbContext.SaveChangesAsync();
+                return affected > 0;
             }
-            return await Task.FromResult(false);
+            return false;
+        }
+
+        public async Task<bool> ExistsByIdAsync(int id)
+        {
+            return await dbContext.Employees.AnyAsync(e => e.Id == id);
         }
 
         public async Task<IEnumerable<Employee>> GetAllAsync()
@@ -38,7 +44,7 @@ namespace EmployeeApp.Repositories
             return await dbContext.Employees.ToArrayAsync();
         }
 
-        public async Task<Employee?> GetByIdAsync(Guid id)
+        public async Task<Employee?> GetByIdAsync(int id)
         {
             var user = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
             return user;
@@ -46,7 +52,6 @@ namespace EmployeeApp.Repositories
 
         public async Task<bool> UpdateAsync(Employee employee)
         {
-
             var result = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
 
             if (result is not null)
@@ -55,22 +60,18 @@ namespace EmployeeApp.Repositories
                 result.LastName = employee.LastName;
                 result.Phone = employee.Phone;
                 result.Salary = employee.Salary;
-                result.Address = employee.Address;
                 result.Email = employee.Email;
                 result.IsDeleted = employee.IsDeleted;
-                result.UpdatedById = new Guid();// should be changed
-                result.UpdatedDate = DateTime.Now;
 
-                if (result.Id != new Guid())
+
+                if (result.Id != 0)
                 {
                     result.Id = employee.Id;
                 }
             }
-
             int affected = await dbContext.SaveChangesAsync();
-            // return affected > 0;
-            return result;//
-        }// TODO complete the return data like in the book
-        // Create Service
+
+            return affected > 0;
+        }
     }
 }

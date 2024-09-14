@@ -10,18 +10,14 @@ namespace EmployeeApp.Mapping
         {
             return new Employee()
             {
-                Id = Guid.NewGuid(),
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
                 Phone = request.Phone,
-                Address = request.Address,
-                CreatedById = request.CreatedById,
-                CreatedDate = DateTime.Now,
                 Salary = request.Salary
             };
         }
-        public static Employee MaptoEmployee(this UpdateEmployeeRequest request, Guid id)
+        public static Employee MaptoEmployee(this UpdateEmployeeRequest request, int id)
         {
             return new Employee()
             {
@@ -30,9 +26,6 @@ namespace EmployeeApp.Mapping
                 LastName = request.LastName,
                 Email = request.Email,
                 Phone = request.Phone,
-                Address = request.Address,
-                UpdatedById = Guid.NewGuid(),
-                UpdatedDate = DateTime.Now,
                 Salary = request.Salary,
                 IsDeleted = request.IsDeleted
             };
@@ -46,11 +39,6 @@ namespace EmployeeApp.Mapping
                 LastName = employee.LastName,
                 Email = employee.LastName,
                 Phone = employee.Phone,
-                Address = employee.Address,
-                CreatedById = employee.CreatedById,
-                CreatedDate = employee.CreatedDate,
-                UpdatedById = employee.UpdatedById,
-                UpdatedDate = employee.UpdatedDate,
                 Salary = employee.Salary,
                 IsDeleted = employee.IsDeleted
             };

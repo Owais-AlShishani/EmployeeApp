@@ -4,10 +4,11 @@ namespace EmployeeApp.Repositories
 {
     public interface IEmployeeRepository
     {
-        Task<Employee?> GetByIdAsync(Guid id);// nullable becasue maybe it will not find the employee
+        Task<Employee?> GetByIdAsync(int id);// nullable becasue maybe it will not find the employee
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<bool> CreateAsync(Employee employee);
         Task<bool> UpdateAsync(Employee employee);
-        Task<bool> DeleteByIdAsync(Guid id);
+        Task<bool> DeleteByIdAsync(int id);
+        Task<bool> ExistsByIdAsync(int id);
     }
 }
