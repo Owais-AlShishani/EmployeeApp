@@ -1,3 +1,4 @@
+using EmployeeApp;
 using EmployeeApp.Data;
 using EmployeeApp.Repositories;
 using EmployeeApp.Services;
@@ -16,8 +17,10 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeContext"
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();//Vid  7/14
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddTransient<GlobalErrorHandling>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -31,5 +34,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<GlobalErrorHandling>();
 
 app.Run();

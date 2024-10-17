@@ -37,7 +37,7 @@ namespace EmployeeApp.Mapping
                 Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Email = employee.LastName,
+                Email = employee.Email,
                 Phone = employee.Phone,
                 Salary = employee.Salary,
                 IsDeleted = employee.IsDeleted
