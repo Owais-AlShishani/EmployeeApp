@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeApp.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -62,7 +62,7 @@ namespace EmployeeApp.Controllers
             {
                 return NotFound();
             }
-            var employeeResponse = updateEmployee?.MapToResponse();
+            var employeeResponse = updateEmployee.MapToResponse();
             return Ok(employeeResponse);
         }
 

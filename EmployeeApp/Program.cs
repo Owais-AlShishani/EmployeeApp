@@ -17,7 +17,10 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeContext"
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();//Vid  7/14
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddTransient<GlobalErrorHandling>();
+//builder.Services.AddTransient<GlobalErrorHandling>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 var app = builder.Build();
 
@@ -34,6 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseMiddleware<GlobalErrorHandling>();
+//app.UseMiddleware<GlobalErrorHandling>();
+app.UseExceptionHandler();
 
 app.Run();

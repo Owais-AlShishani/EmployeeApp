@@ -1,24 +1,38 @@
-﻿namespace EmployeeApp
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EmployeeApp
 {
-    public class GlobalErrorHandling : IMiddleware
+    public class GlobalExceptionHandler : IExceptionHandler
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        private readonly ILogger<GlobalExceptionHandler> _logger;
+
+        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
         {
-            try
-            {
-                await next(context);
-            }
-
-            catch (Exception error)
-            {
-                var response = context.Response;
-                response.ContentType = "application/json";
-
-                Console.WriteLine($"Error: {error.Message}");
-                Console.WriteLine($"Error Details: {context.Request.Path}");
-
-                await response.WriteAsync("Error");
-            }
+            _logger = logger;
         }
+
+        public async ValueTask<bool> TryHandleAsync(
+            HttpContext httpContext,
+            Exception exception,
+            CancellationToken cancellationToken)
+        {
+            _logger.LogError(
+                exception, "Exception occurred: {Message}", exception.Message);
+
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "Server error",
+            };
+
+            httpContext.Response.StatusCode = problemDetails.Status.Value;
+
+            await httpContext.Response
+                .WriteAsJsonAsync(problemDetails, cancellationToken);
+
+            return true;
+        }
+
     }
 }
