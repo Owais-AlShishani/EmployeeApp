@@ -2,6 +2,7 @@ using EmployeeApp;
 using EmployeeApp.Data;
 using EmployeeApp.Repositories;
 using EmployeeApp.Services;
+using EmployeeApplication;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeContext")));
+builder.Services.AddApplication();
 
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();//Vid  7/14
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 //builder.Services.AddTransient<GlobalErrorHandling>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
