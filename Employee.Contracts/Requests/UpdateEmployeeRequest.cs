@@ -1,4 +1,4 @@
-﻿namespace EmployeeApp.Models.Requests
+﻿namespace Contracts.Requests
 {
     public class UpdateEmployeeRequest
     {

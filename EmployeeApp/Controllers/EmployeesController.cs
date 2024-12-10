@@ -1,5 +1,5 @@
-﻿using EmployeeApp.Mapping;
-using EmployeeApp.Models.Requests;
+﻿using Contracts.Requests;
+using EmployeeApp.Mapping;
 using EmployeeApp.Services;
 using Microsoft.AspNetCore.Mvc;
 

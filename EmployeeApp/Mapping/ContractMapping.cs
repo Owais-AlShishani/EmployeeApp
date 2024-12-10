@@ -1,6 +1,6 @@
-﻿using EmployeeApp.Models.Entities;
-using EmployeeApp.Models.Requests;
-using EmployeeApp.Models.Responses;
+﻿using Contracts.Requests;
+using Contracts.Responses;
+using EmployeeApp.Models.Entities;
 
 namespace EmployeeApp.Mapping
 {

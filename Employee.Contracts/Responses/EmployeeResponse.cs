@@ -1,4 +1,4 @@
-﻿namespace EmployeeApp.Models.Responses
+﻿namespace Contracts.Responses
 {
     public class EmployeeResponse
     {
