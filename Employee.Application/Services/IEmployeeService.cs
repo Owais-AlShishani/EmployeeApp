@@ -1,4 +1,4 @@
-﻿using EmployeeApp.Models.Entities;
+﻿using EmployeeApplication.Models.Entities;
 
 namespace EmployeeApp.Services
 {

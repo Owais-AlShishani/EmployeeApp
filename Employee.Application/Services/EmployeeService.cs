@@ -1,5 +1,5 @@
-﻿using EmployeeApp.Models.Entities;
-using EmployeeApp.Repositories;
+﻿using EmployeeApp.Repositories;
+using EmployeeApplication.Models.Entities;
 
 namespace EmployeeApp.Services
 {

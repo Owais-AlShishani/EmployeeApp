@@ -1,5 +1,5 @@
 ﻿using EmployeeApp.Data;
-using EmployeeApp.Models.Entities;
+using EmployeeApplication.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeApp.Repositories
@@ -15,10 +15,9 @@ namespace EmployeeApp.Repositories
 
         public async Task<bool> CreateAsync(Employee employee)
         {
-            //int result = await dbContext.AddAsync(employee);
             await dbContext.AddAsync(employee);
-            int affected = await dbContext.SaveChangesAsync();
-            return affected > 0;
+            await dbContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
@@ -26,10 +25,9 @@ namespace EmployeeApp.Repositories
             var user = await dbContext.Employees.FindAsync(id);
             if (user is not null)
             {
-                //var value = dbContext.Employees.Remove(user);
                 dbContext.Employees.Remove(user);
-                int affected = await dbContext.SaveChangesAsync();
-                return affected > 0;
+                await dbContext.SaveChangesAsync();
+                return true;
             }
             return false;
         }
@@ -46,8 +44,7 @@ namespace EmployeeApp.Repositories
 
         public async Task<Employee?> GetByIdAsync(int id)
         {
-            var user = await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
-            return user;
+            return await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<bool> UpdateAsync(Employee employee)
@@ -63,15 +60,11 @@ namespace EmployeeApp.Repositories
                 result.Email = employee.Email;
                 result.IsDeleted = employee.IsDeleted;
 
-
-                if (result.Id != 0)
-                {
-                    result.Id = employee.Id;
-                }
+                await dbContext.SaveChangesAsync();
+                return true;
             }
-            int affected = await dbContext.SaveChangesAsync();
 
-            return affected > 0;
+            return false;
         }
     }
 }
