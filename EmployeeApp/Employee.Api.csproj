@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Employee.Application\Employee.Application.csproj" />
     <ProjectReference Include="..\Employee.Contracts\Employee.Contracts.csproj" />
   </ItemGroup>
