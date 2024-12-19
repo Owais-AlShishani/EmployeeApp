@@ -17,9 +17,9 @@ namespace EmployeeApp.Controllers
 
 
         [HttpGet(ApiEndpoints.Employees.GetAll)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken token)
         {
-            var employees = await employeeService.GetAllAsync();
+            var employees = await employeeService.GetAllAsync(token);
             if (employees is null)
             {
                 return NotFound();
@@ -30,9 +30,9 @@ namespace EmployeeApp.Controllers
 
 
         [HttpGet(ApiEndpoints.Employees.Get)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id, CancellationToken token)
         {
-            var employee = await employeeService.GetByIdAsync(id);
+            var employee = await employeeService.GetByIdAsync(id, token);
             if (employee is null)
             {
                 return NotFound();
@@ -43,20 +43,20 @@ namespace EmployeeApp.Controllers
 
 
         [HttpPost(ApiEndpoints.Employees.Create)]
-        public async Task<IActionResult> Create(CreateEmployeeRequest request)
+        public async Task<IActionResult> Create(CreateEmployeeRequest request, CancellationToken token)
         {
             var employee = request.MapToEmployee();
-            await employeeService.CreateAsync(employee);
+            await employeeService.CreateAsync(employee, token);
             var employeeResponse = employee.MapToResponse();
             return CreatedAtAction(nameof(Get), new { id = employee.Id }, employeeResponse);
         }
 
 
         [HttpPut(ApiEndpoints.Employees.Update)]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeRequest request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateEmployeeRequest request, CancellationToken token)
         {
             var employee = request.MaptoEmployee(id);
-            var updateEmployee = await employeeService.UpdateAsync(employee);
+            var updateEmployee = await employeeService.UpdateAsync(employee, token);
             if (updateEmployee is null)
             {
                 return NotFound();
@@ -67,9 +67,9 @@ namespace EmployeeApp.Controllers
 
 
         [HttpDelete(ApiEndpoints.Employees.Delete)]
-        public async Task<IActionResult> DeleteById(int id)
+        public async Task<IActionResult> DeleteById(int id, CancellationToken token)
         {
-            var deleted = await employeeService.DeleteByIdAsync(id);
+            var deleted = await employeeService.DeleteByIdAsync(id, token);
             if (!deleted)
             {
                 return NotFound();

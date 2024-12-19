@@ -15,37 +15,37 @@ namespace EmployeeApp.Services
             this.employeeValidator = employeeValidator;
         }
 
-        public async Task<bool> CreateAsync(Employee employee)
+        public async Task<bool> CreateAsync(Employee employee, CancellationToken token = default)
         {
-            await employeeValidator.ValidateAndThrowAsync(employee);
-            return await employeeRepository.CreateAsync(employee);
+            await employeeValidator.ValidateAndThrowAsync(employee, cancellationToken: token);
+            return await employeeRepository.CreateAsync(employee,token);
         }
 
-        public async Task<bool> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(int id, CancellationToken token = default)
         {
-            return await employeeRepository.DeleteByIdAsync(id);
+            return await employeeRepository.DeleteByIdAsync(id,token);
         }
 
-        public async Task<IEnumerable<Employee>> GetAllAsync()
+        public async Task<IEnumerable<Employee>> GetAllAsync( CancellationToken token = default)
         {
-            return await employeeRepository.GetAllAsync();
+            return await employeeRepository.GetAllAsync(token);
         }
 
-        public async Task<Employee?> GetByIdAsync(int id)
+        public async Task<Employee?> GetByIdAsync(int id, CancellationToken token = default)
         {
-            return await employeeRepository.GetByIdAsync(id);
+            return await employeeRepository.GetByIdAsync(id,token);
         }
 
-        public async Task<Employee?> UpdateAsync(Employee employee)
+        public async Task<Employee?> UpdateAsync(Employee employee, CancellationToken token = default)
         {
-            await employeeValidator.ValidateAndThrowAsync(employee);
+            await employeeValidator.ValidateAndThrowAsync(employee, cancellationToken: token);
 
-            var employeeExist = await employeeRepository.ExistsByIdAsync(employee.Id);
+            var employeeExist = await employeeRepository.ExistsByIdAsync(employee.Id,token);
             if (!employeeExist)
             {
                 return null;
             }
-            await employeeRepository.UpdateAsync(employee);
+            await employeeRepository.UpdateAsync(employee,token);
             return employee;
         }
     }
