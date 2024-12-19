@@ -1,6 +1,8 @@
 ﻿using EmployeeApp.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using EmployeeApp.Services;
+using FluentValidation;
+using EmployeeApplication.Models.Entities;
 
 namespace EmployeeApplication
 {
@@ -10,7 +12,7 @@ namespace EmployeeApplication
         {
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeService, EmployeeService>();
-
+            services.AddValidatorsFromAssemblyContaining<IApplicationMarker>(ServiceLifetime.Singleton);// Implementing validation Lec
             return services;
         }
     }

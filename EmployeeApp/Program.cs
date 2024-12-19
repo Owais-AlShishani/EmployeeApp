@@ -1,3 +1,4 @@
+using EmployeeApi.Mapping;
 using EmployeeApp;
 using EmployeeApp.Data;
 using EmployeeApp.Repositories;
@@ -18,8 +19,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("EmployeeContext"
 builder.Services.AddApplication();
 
 //builder.Services.AddTransient<GlobalErrorHandling>();
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
+//builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+//builder.Services.AddProblemDetails();
 
 
 var app = builder.Build();
@@ -36,8 +37,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
 //app.UseMiddleware<GlobalErrorHandling>();
-app.UseExceptionHandler();
+//app.UseExceptionHandler();
 
 app.Run();

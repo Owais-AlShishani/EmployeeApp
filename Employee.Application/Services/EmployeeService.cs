@@ -1,17 +1,23 @@
 ﻿using EmployeeApp.Repositories;
 using EmployeeApplication.Models.Entities;
+using FluentValidation;
 
 namespace EmployeeApp.Services
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository employeeRepository;
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        private readonly IValidator<Employee> employeeValidator;
+
+        public EmployeeService(IEmployeeRepository employeeRepository, IValidator<Employee> employeeValidator)
         {
             this.employeeRepository = employeeRepository;
+            this.employeeValidator = employeeValidator;
         }
+
         public async Task<bool> CreateAsync(Employee employee)
         {
+            await employeeValidator.ValidateAndThrowAsync(employee);
             return await employeeRepository.CreateAsync(employee);
         }
 
@@ -32,6 +38,8 @@ namespace EmployeeApp.Services
 
         public async Task<Employee?> UpdateAsync(Employee employee)
         {
+            await employeeValidator.ValidateAndThrowAsync(employee);
+
             var employeeExist = await employeeRepository.ExistsByIdAsync(employee.Id);
             if (!employeeExist)
             {
